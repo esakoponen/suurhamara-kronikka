@@ -617,6 +617,7 @@
             1: {
                 title: "Agricultural Revolution",
                 year: "3800 BC",
+                author: "Dr. Marcus Fieldstone",
                 pages: [
                     {
                         content: "The Agricultural Revolution marked humanity's transition from nomadic hunter-gatherer societies to settled farming communities. This pivotal moment in history began in the Fertile Crescent and allowed for the development of permanent settlements, food surpluses, and population growth."
@@ -632,6 +633,7 @@
             2: {
                 title: "Invention of Writing",
                 year: "3200 BC",
+                author: "Professor Helena Scribner",
                 pages: [
                     {
                         content: "The Sumerians of ancient Mesopotamia developed cuneiform, one of the earliest forms of writing. This breakthrough allowed humans to record information, preserve knowledge across generations, and communicate complex ideas beyond oral tradition."
@@ -644,6 +646,7 @@
             3: {
                 title: "Great Pyramid of Giza Built",
                 year: "2560 BC",
+                author: "Dr. Rashid Al-Masri",
                 pages: [
                     {
                         content: "The Great Pyramid of Giza, built as a tomb for Pharaoh Khufu, stands as a testament to ancient Egyptian engineering prowess and organizational capability. Constructed from approximately 2.3 million limestone blocks, it remained the world's tallest man-made structure for over 3,800 years."
@@ -656,6 +659,7 @@
             4: {
                 title: "Birth of Democracy in Athens",
                 year: "508 BC",
+                author: "Professor Sophia Athenaeus",
                 pages: [
                     {
                         content: "Cleisthenes introduced democratic reforms in Athens, establishing the world's first known democracy. This system gave political power to the citizens through direct participation in the Assembly. Though limited to free adult males, it represented a revolutionary concept in governance."
@@ -668,6 +672,7 @@
             5: {
                 title: "Roman Empire Founded",
                 year: "27 BC",
+                author: "Dr. Julius Maximus",
                 pages: [
                     {
                         content: "Augustus Caesar became the first Roman Emperor, transforming the Roman Republic into the Roman Empire. This marked the beginning of the Pax Romana, a 200-year period of relative peace and prosperity that allowed Roman culture and infrastructure to flourish across three continents."
@@ -680,6 +685,7 @@
             6: {
                 title: "Gutenberg's Printing Press",
                 year: "1440 AD",
+                author: "Professor Wilhelm Buchmann",
                 pages: [
                     {
                         content: "Johannes Gutenberg invented the movable-type printing press in Mainz, Germany, revolutionizing the spread of information. This technology made books affordable and accessible, catalyzing the Renaissance, Reformation, and Scientific Revolution."
@@ -692,6 +698,7 @@
             7: {
                 title: "Steam Engine Perfected",
                 year: "1712 AD",
+                author: "Dr. James Ironwright",
                 pages: [
                     {
                         content: "Thomas Newcomen developed the first practical steam engine, later improved by James Watt. This invention became the driving force of the Industrial Revolution, transforming manufacturing, transportation, and society. Steam power enabled factories to operate independently of water sources."
@@ -704,6 +711,7 @@
             8: {
                 title: "Industrial Revolution Begins",
                 year: "1760 AD",
+                author: "Professor Catherine Millwright",
                 pages: [
                     {
                         content: "The Industrial Revolution began in Britain, marking the transition from agrarian economies to industrial manufacturing. Innovations in textiles, iron production, and mechanization transformed production methods and social structures. Urban populations exploded as people moved from rural areas to factory towns."
@@ -716,6 +724,7 @@
             9: {
                 title: "Edison's Electric Light",
                 year: "1879 AD",
+                author: "Dr. Thomas Brightwell",
                 pages: [
                     {
                         content: "Thomas Edison developed a practical, long-lasting electric light bulb, revolutionizing daily life and extending productive hours beyond daylight. This invention, combined with electrical distribution systems, transformed cities, homes, and workplaces."
@@ -728,6 +737,7 @@
             10: {
                 title: "First Electronic Computer",
                 year: "1946 AD",
+                author: "Professor Alan Turing-Maxwell",
                 pages: [
                     {
                         content: "ENIAC (Electronic Numerical Integrator and Computer) became the first general-purpose electronic computer. Weighing 30 tons and occupying 1,800 square feet, it could perform complex calculations thousands of times faster than any previous machine."
@@ -771,6 +781,16 @@
                 } else {
                     leftPage.innerHTML = `<div class="book-text"><p>${pages[pageIndex].content}</p></div>`;
                 }
+
+                // Add author if this is the last page and there's no right page
+                if (pageIndex === pages.length - 1) {
+                    leftPage.innerHTML += `
+                        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #8b6f47; text-align: right; font-style: italic; color: #8b6f47; font-size: 16px;">
+                            — ${data.author}
+                        </div>
+                    `;
+                }
+
                 leftPageNum.textContent = `${pageIndex + 1}`;
             } else {
                 leftPageNum.textContent = '';
@@ -780,6 +800,15 @@
             if (pageIndex + 1 < pages.length) {
                 rightPage.innerHTML = `<div class="book-text"><p>${pages[pageIndex + 1].content}</p></div>`;
                 rightPageNum.textContent = `${pageIndex + 2}`;
+
+                // Add author if this is the last page
+                if (pageIndex + 2 === pages.length) {
+                    rightPage.innerHTML += `
+                        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #8b6f47; text-align: right; font-style: italic; color: #8b6f47; font-size: 16px;">
+                            — ${data.author}
+                        </div>
+                    `;
+                }
             } else {
                 rightPage.innerHTML = '<div class="book-text" style="text-align: center; padding-top: 150px; font-size: 24px; color: #8b6f47; font-style: italic;">~ End ~</div>';
                 rightPageNum.textContent = '';

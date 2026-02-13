@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historical Timeline - 4000 BC to 2500 AD</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cinzel', 'Georgia', serif;
+            background: linear-gradient(to bottom, #3d2f1f 0%, #5c4a35 50%, #3d2f1f 100%);
+            overflow-x: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timeline-container {
+            width: 95%;
+            height: 90vh;
+            background: linear-gradient(135deg, #d4b896 0%, #e8d4b0 50%, #d4b896 100%);
+            border: 20px solid #8b6f47;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8),
+                        inset 0 0 100px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(139, 111, 71, 0.03) 2px, rgba(139, 111, 71, 0.03) 4px),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139, 111, 71, 0.03) 2px, rgba(139, 111, 71, 0.03) 4px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .timeline-scroll {
+            width: 100%;
+            height: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            position: relative;
+            z-index: 2;
+            padding: 40px 0;
+        }
+
+        .timeline-scroll::-webkit-scrollbar {
+            height: 12px;
+        }
+
+        .timeline-scroll::-webkit-scrollbar-track {
+            background: rgba(139, 111, 71, 0.3);
+        }
+
+        .timeline-scroll::-webkit-scrollbar-thumb {
+            background: #8b6f47;
+            border-radius: 6px;
+        }
+
+        .timeline {
+            display: flex;
+            align-items: center;
+            position: relative;
+            height: 100%;
+            padding: 0 100px;
+            min-width: max-content;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #8b6f47, #a0826d, #8b6f47);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transform: translateY(-50%);
+        }
+
+        .timeline-event {
+            position: relative;
+            margin: 0 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-event:hover {
+            transform: scale(1.05);
+        }
+
+        .event-marker {
+            width: 20px;
+            height: 20px;
+            background: #8b6f47;
+            border: 3px solid #d4b896;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            z-index: 3;
+        }
+
+        .event-icon {
+            width: 120px;
+            height: 120px;
+            margin-top: -80px;
+            background: radial-gradient(circle, #f5e6d3, #d4b896);
+            border: 4px solid #8b6f47;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .timeline-event:hover .event-icon {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+            background: radial-gradient(circle, #fff8e7, #e8d4b0);
+        }
+
+        .event-icon svg {
+            width: 70px;
+            height: 70px;
+        }
+
+        .event-year {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #3d2f1f;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            background: rgba(212, 184, 150, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 2px solid #8b6f47;
+        }
+
+        .event-title {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #3d2f1f;
+            text-align: center;
+            max-width: 150px;
+            font-weight: 600;
+        }
+
+        /* Book Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .book-container {
+            position: relative;
+            perspective: 1500px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .book {
+            position: relative;
+            display: flex;
+            width: 100%;
+            min-height: 600px;
+            background: #2a1f15;
+            border-radius: 15px;
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.9),
+                inset 0 0 20px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+        }
+
+        .book-spine {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            background: linear-gradient(to right,
+                rgba(0, 0, 0, 0.4) 0%,
+                rgba(0, 0, 0, 0.2) 50%,
+                rgba(0, 0, 0, 0.4) 100%);
+            transform: translateX(-50%);
+            z-index: 5;
+            border-radius: 4px;
+        }
+
+        .book-page {
+            flex: 1;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d4b0 100%);
+            padding: 40px;
+            position: relative;
+            overflow-y: auto;
+            max-height: 600px;
+        }
+
+        .book-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(139, 111, 71, 0.08) 30px, rgba(139, 111, 71, 0.08) 31px);
+            pointer-events: none;
+        }
+
+        .page-left {
+            border-radius: 15px 0 0 15px;
+            border-right: 2px solid rgba(139, 111, 71, 0.3);
+            margin-right: 20px;
+        }
+
+        .page-right {
+            border-radius: 0 15px 15px 0;
+            border-left: 2px solid rgba(139, 111, 71, 0.3);
+            margin-left: 20px;
+        }
+
+        .page-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .book-title {
+            font-size: 36px;
+            color: #3d2f1f;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #8b6f47;
+            padding-bottom: 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .book-year {
+            font-size: 28px;
+            color: #8b6f47;
+            margin-bottom: 25px;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .book-text {
+            font-size: 18px;
+            color: #3d2f1f;
+            line-height: 1.9;
+            font-family: 'Georgia', serif;
+            text-align: justify;
+            text-indent: 30px;
+        }
+
+        .book-text p {
+            margin-bottom: 20px;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 20px;
+            font-size: 14px;
+            color: #8b6f47;
+            font-style: italic;
+        }
+
+        .page-left .page-number {
+            left: 40px;
+        }
+
+        .page-right .page-number {
+            right: 40px;
+        }
+
+        /* Navigation Arrows */
+        .book-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(61, 47, 31, 0.9);
+            border: 3px solid #8b6f47;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        .book-nav:hover {
+            background: rgba(139, 111, 71, 0.9);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .book-nav.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .nav-left {
+            left: -80px;
+        }
+
+        .nav-right {
+            right: -80px;
+        }
+
+        .book-nav svg {
+            width: 30px;
+            height: 30px;
+            fill: #f5e6d3;
+        }
+
+        .book-close {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 50px;
+            height: 50px;
+            background: rgba(139, 111, 71, 0.95);
+            border: 3px solid #8b6f47;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            font-size: 28px;
+            color: #f5e6d3;
+            font-weight: bold;
+        }
+
+        .book-close:hover {
+            background: rgba(61, 47, 31, 0.95);
+            transform: rotate(90deg);
+        }
+
+        .title-banner {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(61, 47, 31, 0.9);
+            color: #f5e6d3;
+            padding: 15px 40px;
+            border-radius: 10px;
+            border: 3px solid #8b6f47;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Page transition effect */
+        .book-page {
+            transition: opacity 0.3s ease;
+        }
+
+        .book.turning .book-page {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="timeline-container">
+        <div class="title-banner">Timeline of Civilization: 4000 BC - 2500 AD</div>
+
+        <div class="timeline-scroll">
+            <div class="timeline">
+                <div class="timeline-line"></div>
+
+                <!-- Event 1: Agriculture -->
+                <div class="timeline-event" data-event="1">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 100 100" fill="#8b6f47">
+                            <path d="M50 10 L55 40 L50 45 L45 40 Z"/>
+                            <path d="M50 45 L50 90"/>
+                            <circle cx="35" cy="30" r="3"/>
+                            <circle cx="40" cy="35" r="2"/>
+                            <circle cx="60" cy="35" r="2"/>
+                            <circle cx="65" cy="30" r="3"/>
+                            <path d="M30 80 Q50 70 70 80" fill="none" stroke="#8b6f47" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="event-marker"></div>
+                    <div class="event-year">3800 BC</div>
+                    <div class="event-title">Agricultural Revolution</div>
+                </div>
+
+                <!-- Event 2: Writing -->
+                <div class="timeline-event" data-event="2">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 100 100" fill="#8b6f47">
+                            <rect x="20" y="15" width="60" height="70" fill="none" stroke="#8b6f47" stroke-width="3"/>
+                            <line x1="30" y1="30" x2="70" y2="30" stroke="#8b6f47" stroke-width="2"/>
+                            <line x1="30" y1="40" x2="65" y2="40" stroke="#8b6f47" stroke-width="2"/>
+                            <line x1="30" y1="50" x2="70" y2="50" stroke="#8b6f47" stroke-width="2"/>
+                            <line x1="30" y1="60" x2="60" y2="60" stroke="#8b6f47" stroke-width="2"/>
+                            <line x1="30" y1="70" x2="70" y2="70" stroke="#8b6f47" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="event-marker"></div>
+                    <div class="event-year">3200 BC</div>
+                    <div class="event-title">Invention of Writing</div>
+                </div>
+
+                <!-- Event 3: Pyramids -->
+                <div class="timeline-event" data-event="3">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 100 100" fill="#8b6f47">
+                            <polygon points="50,15 85,85 15,85"/>
+                            <line x1="50" y1="50" x2="85" y2="85" stroke="#d4b896" stroke-width="2"/>
+                            <line x1="50" y1="50" x2="15" y2="85" stroke="#d4b896" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="event-marker"></div>
+                    <div class="event-year">2560 BC</div>
+                    <div class="event-title">Great Pyramid Built</div>
+                </div>
+
+                <!-- Event 4: Democracy -->
+                <div class="timeline-event" data-event="4">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 100 100" fill="#8b6f47">
+                            <circle cx="50" cy="25" r="12"/>
+                            <path d="M50 37 L50 55"/>
+                            <path d="M50 55 L35 75"/>
+                            <path d="M50 55 L65 75"/>
+                            <path d="M50 45 L30 50"/>
+                            <path d="M50 45 L70 50"/>
+                            <rect x="20" y="80" width="60" height="8" rx="2"/>
+                        </svg>
+                    </div>
+                    <div class="event-marker"></div>
+                    <div class="event-year">508 BC</div>
+                    <div class="event-title">Birth of Democracy</div>
+                </div>
+
+                <!-- Event 5: Roman Empire -->
+                <div class="timeline-event" data-event="5">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 100 100" fill="#8b6f47">
+                            <rect x="30" y="20" width="40" height="60"/>
+                            <rect x="25" y="15" width="50" height="8"/>
+                            <rect x="20" y="75" width="60" height="8"/>
+                            <circle cx="35" cy="40" r="4"/>
+                            <circle cx="50" cy="40" r="4"/>
+                            <circle cx="65" cy="40" r="4"/>
+                            <rect x="43" y="50" width="14" height="25"/>
+                        </svg>
+                    </div>
+                    <div class="event-marker"></div>
+                    <div class="event-year">27 BC</div>
+                    <div class="event-title">Roman Empire Founded</div>
+                </div>
+
+                <!-- Event 6: Printing Press -->
+                <div class="timeline-event" data-event="6">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 100 100" fill="#8b6f47">
+                            <rect x="25" y="20" width="50" height="15" rx="2"/>
+                            <rect x="30" y="35" width="40" height="30" fill="none" stroke="#8b6f47" stroke-width="3"/>
+                            <rect x="35" y="40" width="30" height="20" fill="#d4b896"/>
+                            <rect x="20" y="65" width="60" height="5"/>
+                            <circle cx="30" cy="80" r="8"/>
+                            <circle cx="70" cy="80" r="8"/>
+                        </svg>
+                    </div>
+                    <div class="event-marker"></div>
+                    <div class="event-year">1440 AD</div>
+                    <div class="event-title">Printing Press</div>
+                </div>
+
+                <!-- Event 7: Steam Engine -->
+                <div class="timeline-event" data-event="7">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 100 100" fill="#8b6f47">
+                            <circle cx="50" cy="40" r="25"/>
+                            <rect x="40" y="40" width="20" height="30"/>
+                            <circle cx="50" cy="75" r="8"/>
+                            <rect x="25" y="25" width="10" height="20" rx="2"/>
+                            <circle cx="30" cy="20" r="5"/>
+                            <path d="M30 15 Q25 10 30 5" fill="none" stroke="#8b6f47" stroke-width="2"/>
+                            <path d="M30 15 Q35 10 30 5" fill="none" stroke="#8b6f47" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="event-marker"></div>
+                    <div class="event-year">1712 AD</div>
+                    <div class="event-title">Steam Engine</div>
+                </div>
+
+                <!-- Event 8: Industrial Revolution -->
+                <div class="timeline-event" data-event="8">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 100 100" fill="#8b6f47">
+                            <rect x="30" y="50" width="40" height="35"/>
+                            <rect x="20" y="45" width="60" height="8"/>
+                            <rect x="35" y="30" width="8" height="20"/>
+                            <rect x="57" y="25" width="8" height="25"/>
+                            <circle cx="39" cy="22" r="5"/>
+                            <circle cx="61" cy="17" r="5"/>
+                            <circle cx="35" cy="65" r="4"/>
+                            <circle cx="50" cy="65" r="4"/>
+                            <circle cx="65" cy="65" r="4"/>
+                        </svg>
+                    </div>
+                    <div class="event-marker"></div>
+                    <div class="event-year">1760 AD</div>
+                    <div class="event-title">Industrial Revolution</div>
+                </div>
+
+                <!-- Event 9: Electricity -->
+                <div class="timeline-event" data-event="9">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 100 100" fill="#8b6f47">
+                            <path d="M50 10 L40 40 L55 40 L30 80 L50 50 L35 50 L50 10" fill="#8b6f47"/>
+                            <circle cx="50" cy="50" r="35" fill="none" stroke="#8b6f47" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="event-marker"></div>
+                    <div class="event-year">1879 AD</div>
+                    <div class="event-title">Electric Light</div>
+                </div>
+
+                <!-- Event 10: Computer Age -->
+                <div class="timeline-event" data-event="10">
+                    <div class="event-icon">
+                        <svg viewBox="0 0 100 100" fill="#8b6f47">
+                            <rect x="20" y="25" width="60" height="40" rx="3"/>
+                            <rect x="25" y="30" width="50" height="30" fill="#d4b896"/>
+                            <rect x="35" y="65" width="30" height="3"/>
+                            <rect x="30" y="68" width="40" height="8" rx="2"/>
+                            <line x1="30" y1="40" x2="45" y2="40" stroke="#8b6f47" stroke-width="2"/>
+                            <line x1="30" y1="45" x2="50" y2="45" stroke="#8b6f47" stroke-width="2"/>
+                            <line x1="30" y1="50" x2="40" y2="50" stroke="#8b6f47" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="event-marker"></div>
+                    <div class="event-year">1946 AD</div>
+                    <div class="event-title">First Computer</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Book Modal -->
+    <div class="modal" id="eventModal">
+        <div class="book-container">
+            <div class="book-nav nav-left" id="prevPage">
+                <svg viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </div>
+
+            <div class="book">
+                <div class="book-spine"></div>
+
+                <div class="book-page page-left">
+                    <div class="page-content" id="leftPage"></div>
+                    <div class="page-number" id="leftPageNum"></div>
+                </div>
+
+                <div class="book-page page-right">
+                    <div class="page-content" id="rightPage"></div>
+                    <div class="page-number" id="rightPageNum"></div>
+                </div>
+
+                <div class="book-close" id="bookClose">&times;</div>
+            </div>
+
+            <div class="book-nav nav-right" id="nextPage">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const eventData = {
+            1: {
+                title: "Agricultural Revolution",
+                year: "3800 BC",
+                pages: [
+                    {
+                        content: "The Agricultural Revolution marked humanity's transition from nomadic hunter-gatherer societies to settled farming communities. This pivotal moment in history began in the Fertile Crescent and allowed for the development of permanent settlements, food surpluses, and population growth."
+                    },
+                    {
+                        content: "The domestication of wheat, barley, and livestock transformed human civilization, leading to the rise of villages, towns, and eventually cities. This revolution laid the foundation for all future technological and social advancements. People could now store food for winter, trade surplus goods, and develop specialized crafts and professions."
+                    },
+                    {
+                        content: "With agriculture came the concept of land ownership, social hierarchies, and the earliest forms of government. The ability to produce more food than needed for immediate consumption allowed some members of society to focus on other pursuits such as art, science, and warfare. This marked the true beginning of civilization as we know it."
+                    }
+                ]
+            },
+            2: {
+                title: "Invention of Writing",
+                year: "3200 BC",
+                pages: [
+                    {
+                        content: "The Sumerians of ancient Mesopotamia developed cuneiform, one of the earliest forms of writing. This breakthrough allowed humans to record information, preserve knowledge across generations, and communicate complex ideas beyond oral tradition."
+                    },
+                    {
+                        content: "Writing systems revolutionized administration, commerce, and culture, enabling the development of law codes, literature, and historical records. Temples and palaces employed scribes to record transactions, astronomical observations, and religious texts. The invention of writing marked the transition from prehistory to recorded history."
+                    }
+                ]
+            },
+            3: {
+                title: "Great Pyramid of Giza Built",
+                year: "2560 BC",
+                pages: [
+                    {
+                        content: "The Great Pyramid of Giza, built as a tomb for Pharaoh Khufu, stands as a testament to ancient Egyptian engineering prowess and organizational capability. Constructed from approximately 2.3 million limestone blocks, it remained the world's tallest man-made structure for over 3,800 years."
+                    },
+                    {
+                        content: "The pyramid complex demonstrates advanced knowledge of mathematics, astronomy, and construction techniques. It symbolizes the power of centralized government and the ability to mobilize vast resources for monumental projects. The precision of its construction continues to amaze modern engineers and architects."
+                    }
+                ]
+            },
+            4: {
+                title: "Birth of Democracy in Athens",
+                year: "508 BC",
+                pages: [
+                    {
+                        content: "Cleisthenes introduced democratic reforms in Athens, establishing the world's first known democracy. This system gave political power to the citizens through direct participation in the Assembly. Though limited to free adult males, it represented a revolutionary concept in governance."
+                    },
+                    {
+                        content: "The Athenian democracy featured concepts like equality before the law, freedom of speech, and the right to vote on legislation. Citizens gathered on the Pnyx hill to debate and decide on laws, wars, and policies. This system laid the philosophical and practical foundations for democratic governance that would influence political thought for millennia."
+                    }
+                ]
+            },
+            5: {
+                title: "Roman Empire Founded",
+                year: "27 BC",
+                pages: [
+                    {
+                        content: "Augustus Caesar became the first Roman Emperor, transforming the Roman Republic into the Roman Empire. This marked the beginning of the Pax Romana, a 200-year period of relative peace and prosperity that allowed Roman culture and infrastructure to flourish across three continents."
+                    },
+                    {
+                        content: "The Roman Empire became one of history's most influential civilizations, spreading Latin language, Roman law, engineering, architecture, and governance systems across Europe, North Africa, and the Middle East. Its legacy includes modern legal systems, infrastructure concepts, and Western cultural foundations that persist to this day."
+                    }
+                ]
+            },
+            6: {
+                title: "Gutenberg's Printing Press",
+                year: "1440 AD",
+                pages: [
+                    {
+                        content: "Johannes Gutenberg invented the movable-type printing press in Mainz, Germany, revolutionizing the spread of information. This technology made books affordable and accessible, catalyzing the Renaissance, Reformation, and Scientific Revolution."
+                    },
+                    {
+                        content: "The printing press democratized knowledge, enabling mass literacy and the rapid dissemination of ideas. Before Gutenberg, books were laboriously copied by hand and owned only by the wealthy and religious institutions. His invention fundamentally altered human communication and remains one of the most important inventions in history, paving the way for the Information Age."
+                    }
+                ]
+            },
+            7: {
+                title: "Steam Engine Perfected",
+                year: "1712 AD",
+                pages: [
+                    {
+                        content: "Thomas Newcomen developed the first practical steam engine, later improved by James Watt. This invention became the driving force of the Industrial Revolution, transforming manufacturing, transportation, and society. Steam power enabled factories to operate independently of water sources."
+                    },
+                    {
+                        content: "Railways connected distant regions and ships could navigate against wind and current. The steam engine represented humanity's first major success in harnessing energy from fossil fuels, fundamentally changing the relationship between humans and mechanical power. It marked the beginning of the modern industrial age."
+                    }
+                ]
+            },
+            8: {
+                title: "Industrial Revolution Begins",
+                year: "1760 AD",
+                pages: [
+                    {
+                        content: "The Industrial Revolution began in Britain, marking the transition from agrarian economies to industrial manufacturing. Innovations in textiles, iron production, and mechanization transformed production methods and social structures. Urban populations exploded as people moved from rural areas to factory towns."
+                    },
+                    {
+                        content: "This period saw unprecedented economic growth, technological advancement, and social change, but also brought challenges like poor working conditions and environmental impacts. The Industrial Revolution set the stage for modern capitalism, urbanization, and globalization that continues to shape our world today."
+                    }
+                ]
+            },
+            9: {
+                title: "Edison's Electric Light",
+                year: "1879 AD",
+                pages: [
+                    {
+                        content: "Thomas Edison developed a practical, long-lasting electric light bulb, revolutionizing daily life and extending productive hours beyond daylight. This invention, combined with electrical distribution systems, transformed cities, homes, and workplaces."
+                    },
+                    {
+                        content: "Electric lighting improved safety, productivity, and quality of life while spurring the development of the electrical industry. It symbolized the Second Industrial Revolution and humanity's growing mastery over the physical world through scientific innovation. Streets became safer at night, factories could operate around the clock, and homes were illuminated with the flip of a switch."
+                    }
+                ]
+            },
+            10: {
+                title: "First Electronic Computer",
+                year: "1946 AD",
+                pages: [
+                    {
+                        content: "ENIAC (Electronic Numerical Integrator and Computer) became the first general-purpose electronic computer. Weighing 30 tons and occupying 1,800 square feet, it could perform complex calculations thousands of times faster than any previous machine."
+                    },
+                    {
+                        content: "This breakthrough initiated the Computer Age, leading to the development of modern computing, the internet, and digital technology. Computers have since revolutionized science, business, communication, and virtually every aspect of human life, becoming the defining technology of the late 20th and early 21st centuries. From room-sized machines to pocket-sized smartphones, the digital revolution continues to accelerate."
+                    }
+                ]
+            }
+        };
+
+        const modal = document.getElementById('eventModal');
+        const bookClose = document.getElementById('bookClose');
+        const leftPage = document.getElementById('leftPage');
+        const rightPage = document.getElementById('rightPage');
+        const leftPageNum = document.getElementById('leftPageNum');
+        const rightPageNum = document.getElementById('rightPageNum');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        const book = document.querySelector('.book');
+
+        let currentEvent = null;
+        let currentPageIndex = 0;
+
+        function renderPages(eventId, pageIndex) {
+            const data = eventData[eventId];
+            const pages = data.pages;
+
+            // Clear pages
+            leftPage.innerHTML = '';
+            rightPage.innerHTML = '';
+
+            // Left page (even index)
+            if (pageIndex < pages.length) {
+                if (pageIndex === 0) {
+                    leftPage.innerHTML = `
+                        <div class="book-title">${data.title}</div>
+                        <div class="book-year">${data.year}</div>
+                        <div class="book-text"><p>${pages[pageIndex].content}</p></div>
+                    `;
+                } else {
+                    leftPage.innerHTML = `<div class="book-text"><p>${pages[pageIndex].content}</p></div>`;
+                }
+                leftPageNum.textContent = `${pageIndex + 1}`;
+            } else {
+                leftPageNum.textContent = '';
+            }
+
+            // Right page (odd index)
+            if (pageIndex + 1 < pages.length) {
+                rightPage.innerHTML = `<div class="book-text"><p>${pages[pageIndex + 1].content}</p></div>`;
+                rightPageNum.textContent = `${pageIndex + 2}`;
+            } else {
+                rightPage.innerHTML = '<div class="book-text" style="text-align: center; padding-top: 150px; font-size: 24px; color: #8b6f47; font-style: italic;">~ End ~</div>';
+                rightPageNum.textContent = '';
+            }
+
+            // Update navigation buttons
+            prevPageBtn.classList.toggle('disabled', pageIndex === 0);
+            nextPageBtn.classList.toggle('disabled', pageIndex + 2 >= pages.length);
+        }
+
+        function turnPage(direction) {
+            const data = eventData[currentEvent];
+            const maxPages = data.pages.length;
+
+            book.classList.add('turning');
+
+            setTimeout(() => {
+                if (direction === 'next' && currentPageIndex + 2 < maxPages) {
+                    currentPageIndex += 2;
+                } else if (direction === 'prev' && currentPageIndex > 0) {
+                    currentPageIndex -= 2;
+                }
+
+                renderPages(currentEvent, currentPageIndex);
+                book.classList.remove('turning');
+            }, 150);
+        }
+
+        document.querySelectorAll('.timeline-event').forEach(event => {
+            event.addEventListener('click', function() {
+                const eventId = this.getAttribute('data-event');
+                currentEvent = eventId;
+                currentPageIndex = 0;
+
+                renderPages(eventId, currentPageIndex);
+                modal.classList.add('active');
+            });
+        });
+
+        bookClose.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        prevPageBtn.addEventListener('click', () => turnPage('prev'));
+        nextPageBtn.addEventListener('click', () => turnPage('next'));
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (modal.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    modal.classList.remove('active');
+                } else if (e.key === 'ArrowLeft') {
+                    turnPage('prev');
+                } else if (e.key === 'ArrowRight') {
+                    turnPage('next');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

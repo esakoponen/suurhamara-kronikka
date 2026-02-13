@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect x="20" y="45" width="60" height="8" rx="1" transform="rotate(45 50 50)" fill="#8b6f47"/>
+    <rect x="20" y="45" width="60" height="8" rx="1" transform="rotate(-45 50 50)" fill="#8b6f47"/>
+    <circle cx="30" cy="30" r="6" fill="#8b6f47"/>
+    <circle cx="70" cy="30" r="6" fill="#8b6f47"/>
+    <circle cx="30" cy="70" r="6" fill="#8b6f47"/>
+    <circle cx="70" cy="70" r="6" fill="#8b6f47"/>
+    <polygon points="65,15 70,20 75,15" fill="#8b6f47"/>
+    <polygon points="15,65 20,70 15,75" fill="#8b6f47"/>
+</svg>

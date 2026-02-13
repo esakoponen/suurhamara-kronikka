@@ -872,6 +872,23 @@
                 }
             }
         });
+
+        // Horizontal scroll with mouse wheel
+        const timelineScroll = document.querySelector('.timeline-scroll');
+
+        timelineScroll.addEventListener('wheel', (e) => {
+            // Prevent default vertical scroll
+            e.preventDefault();
+
+            // Scroll horizontally instead
+            // Use deltaY (vertical wheel movement) to scroll horizontally
+            timelineScroll.scrollLeft += e.deltaY;
+
+            // Also support trackpad horizontal scroll
+            if (e.deltaX !== 0) {
+                timelineScroll.scrollLeft += e.deltaX;
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>

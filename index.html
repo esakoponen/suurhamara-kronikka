@@ -222,6 +222,93 @@
             font-weight: bold;
             min-width: 80px;
             text-align: center;
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .page-indicator:hover {
+            color: #f4e8d0;
+        }
+
+        .page-indicator .indicator-label::after {
+            content: ' ▲';
+            font-size: 0.7em;
+            opacity: 0.7;
+        }
+
+        .page-indicator.menu-open .indicator-label::after {
+            content: ' ▼';
+        }
+
+        .page-menu {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(to bottom, #f4e8d0 0%, #e8d7b8 100%);
+            border: 2px solid #5a3a1a;
+            border-radius: 5px;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.6);
+            min-width: 240px;
+            max-height: 320px;
+            overflow-y: auto;
+            z-index: 100;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+        }
+
+        .page-menu.open {
+            display: block;
+        }
+
+        .page-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .page-menu::-webkit-scrollbar-track {
+            background: rgba(101, 67, 33, 0.2);
+        }
+
+        .page-menu::-webkit-scrollbar-thumb {
+            background: rgba(101, 67, 33, 0.5);
+            border-radius: 3px;
+        }
+
+        .page-menu-item {
+            padding: 8px 14px;
+            cursor: pointer;
+            color: #2a1810;
+            font-size: 0.88em;
+            border-bottom: 1px solid rgba(90, 58, 26, 0.2);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: background 0.15s ease;
+        }
+
+        .page-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .page-menu-item:hover {
+            background: rgba(90, 58, 26, 0.15);
+        }
+
+        .page-menu-item.current {
+            font-weight: bold;
+            background: rgba(90, 58, 26, 0.1);
+            color: #3a1808;
+        }
+
+        .page-menu-num {
+            display: inline-block;
+            min-width: 28px;
+            color: #7a4a1a;
+            font-size: 0.85em;
         }
 
         /* SVG illustration */
@@ -972,8 +1059,9 @@
 
     <div class="controls">
         <button class="nav-button" id="prevBtn" onclick="changePage(-1)">◄ Previous</button>
-        <div class="page-indicator">
-            <span id="currentPage">1</span> / <span id="totalPages">3</span>
+        <div class="page-indicator" id="pageIndicator" onclick="togglePageMenu(event)">
+            <span class="indicator-label"><span id="currentPage">1</span> / <span id="totalPages">3</span></span>
+            <div class="page-menu" id="pageMenu"></div>
         </div>
         <button class="nav-button" id="nextBtn" onclick="changePage(1)">Next ►</button>
     </div>
@@ -1005,6 +1093,49 @@
             if (currentIndex >= totalPages) currentIndex = totalPages - 1;
             updatePage();
         }
+
+        function jumpToPage(index) {
+            currentIndex = index;
+            updatePage();
+            closePageMenu();
+        }
+
+        function buildPageMenu() {
+            const menu = document.getElementById('pageMenu');
+            menu.innerHTML = '';
+            scrolls.forEach((scroll, index) => {
+                const title = (scroll.querySelector('h1') || {}).textContent || ('Sivu ' + (index + 1));
+                const item = document.createElement('div');
+                item.className = 'page-menu-item' + (index === currentIndex ? ' current' : '');
+                item.innerHTML = '<span class="page-menu-num">' + (index + 1) + '.</span>' + title;
+                item.onclick = function(e) { e.stopPropagation(); jumpToPage(index); };
+                menu.appendChild(item);
+            });
+        }
+
+        function togglePageMenu(e) {
+            e.stopPropagation();
+            const indicator = document.getElementById('pageIndicator');
+            const menu = document.getElementById('pageMenu');
+            const isOpen = menu.classList.contains('open');
+            if (isOpen) {
+                closePageMenu();
+            } else {
+                buildPageMenu();
+                menu.classList.add('open');
+                indicator.classList.add('menu-open');
+                // Scroll current item into view
+                const current = menu.querySelector('.current');
+                if (current) current.scrollIntoView({ block: 'nearest' });
+            }
+        }
+
+        function closePageMenu() {
+            document.getElementById('pageMenu').classList.remove('open');
+            document.getElementById('pageIndicator').classList.remove('menu-open');
+        }
+
+        document.addEventListener('click', closePageMenu);
 
         updatePage();
     </script>

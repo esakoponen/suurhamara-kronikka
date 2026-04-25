@@ -98,6 +98,10 @@
             letter-spacing: 2px;
         }
 
+        h1.toc-only {
+            display: none;
+        }
+
         .chapter {
             margin-bottom: 40px;
         }
@@ -401,7 +405,7 @@
     <div class="scroll-container">
         <!-- FRONT PAGE -->
         <div class="scroll active" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(to bottom,#1a0f0a 0%,#2c1810 50%,#1a0f0a 100%)">
-            <h1 style="display:none">SUURHÄMÄRÄN KRONIKKA</h1>
+            <h1 class="toc-only">SUURHÄMÄRÄN KRONIKKA</h1>
             <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:min(360px,80%);height:min(360px,80%);opacity:0.92;">
                 <defs>
                     <radialGradient id="glowCenter" cx="50%" cy="50%" r="50%">
@@ -613,7 +617,7 @@
                 </svg>
             </div>
             <div class="scroll-content">
-                <h1>JOHDATUS</h1>
+                <h1 class="toc-only">JOHDATUS</h1>
 
                 <div class="chapter">
                     <p class="chapter-content">
@@ -1098,10 +1102,10 @@
             </div>
 
             <div class="scroll-content">
-                <h1>MAAILMAN LOGIIKKA</h1>
+                <h1>ENNE</h1>
 
                 <div class="chapter">
-                    <p class="chapter-content">
+                    <p class="chapter-content" style="line-height: 2; text-align: center;">
                         Kahdeksan vuoroa, kahdeksan kohtalon hetkeä</br>
                         kun kansojen kohtalo punnitaan.</br>
                         Perikleen oppilaat lausuvat runoja,</br>
@@ -1140,10 +1144,10 @@
 
                 <div class="chapter">
                     <p class="chapter-content" style="line-height: 2; text-align: center;">
-                        Kovin on karua maata saanut kuokkia täällä idässä
+                        Kovin on karua maata saanut kuokkia täällä idässä</br>
                         - missä vilja ei kasva eikä linnut laula.</br>
-                        Norja ja barbaarit on ollu alituisena kiusana ja tekoälyn
-                        virheitä maksellaan korkojen kera.</br>
+                        Norja ja barbaarit on ollu alituisena kiusana</br>
+                        ja tekoälyn virheitä maksellaan korkojen kera.</br>
                         Mutta niin vain tullaan ja kurotaan kaulaa Kreikkaan
                         - tuohon kehittyneeseen ja kauniiseen kulttuuriin</br>
                         - joka näyttää kahmineen aimo kauhallisen mielen ruokaa ja sivistystä.</br>
@@ -1176,12 +1180,14 @@
                     <h2 class="chapter-title">Fredrikin kurimus</h2>
                     <p class="chapter-content" style="line-height: 2; text-align: center;">
                         Voi Fredrikiä, tuota kurjuuden kruunaamaa!</br>
-                        Hänen valtakuntansa on eloton erämaa, jossa nälkäinen kansa kaluaa kiveä viljan sijasta.
-                        Vuosikausien ajan barbaarien kirveet pilkkoivat hänen toivonsa,
-                        ja se vähä, mikä jäi jäljelle, on nyt murentumassa mahtavan Kreikan varjon alle.
-                        Maailman mahtavin keisari on kutistunut pelkäksi varjoksi,
-                        joka joutuu nöyristelemään marmoripalatsien loistossa,
-                        samalla kun hänen oma kansansa hukkuu mutaan ja puutteeseen.
+                        Hänen valtakuntansa on eloton erämaa,</br>
+                        jossa nälkäinen kansa kaluaa kiveä viljan sijasta.</br>
+                        Vuosikausien ajan barbaarien kirveet pilkkoivat hänen toivonsa,</br>
+                        ja se vähä, mikä jäi jäljelle,</br>
+                        on nyt murentumassa mahtavan Kreikan varjon alle.</br>
+                        Maailman mahtavin keisari on kutistunut pelkäksi varjoksi,</br>
+                        joka joutuu nöyristelemään marmoripalatsien loistossa,</br>
+                        samalla kun hänen oma kansansa hukkuu mutaan ja puutteeseen.</br>
                         Kurjuuden huipumaa, jossa jokainen aamu on vain uusi luku kärsimyksen historiassa.
                     </p>
                 </div>
@@ -1206,9 +1212,8 @@
                 <h1>SUURI RAJAKIISTA</h1>
 
                 <div class="chapter">
-                    <h2 class="chapter-title">SUURI RAJAKIISTA</h2>
+                    <h2 class="chapter-title">« Kreikka ja Ranska — rauha, joka ei ollut rauhaa »</h2>
                     <p class="chapter-content" style="line-height: 2; text-align: center;">
-                        « Kreikka ja Ranska — rauha, joka ei ollut rauhaa »</br>
                         Pelin varhaisessa hämärässä, kun kirjoitustaidot olivat</br>
                         vielä kehittymättä ja ensimmäiset kaupungit kohosivat savannien</br>
                         laidoille, Pericles lähetti julistuksen, jonka sanat</br>
@@ -1255,7 +1260,7 @@
                 <div class="chapter">
                     <h2 class="chapter-title">Koneäly kirjoitti Saksan historian</h2>
                     <p class="chapter-content" style="line-height: 2; text-align: center;">
-                        Voi tuota kurjuuden kruunaamaa valtakuntaa!</br></br>
+                        Voi tuota kurjuuden kruunaamaa valtakuntaa!</br>
                         Sen maat ovat eloton erämaa, jossa nälkäinen kansa kaluaa kiveä
                         viljan sijasta. Vuosikausien ajan barbaarien kirveet pilkkoivat
                         toivon, ja se vähä mikä jäi jäljelle, on nyt murentumassa mahtavan
@@ -1265,7 +1270,7 @@
                     </p>
                 </div>
                 <div class="signature-section">
-                    <div class="author-signature">Pohjoisen rajamaan kirjuri</div>
+                    <div class="author-signature">Mentius Fabricus</div>
                 </div>
             </div>
         </div>
@@ -1391,6 +1396,9 @@
                         ...PAGE 19...</br>
                     </p>
                 </div>
+                <div class="signature-section">
+                    <div class="author-signature">Pohjoisen rajamaan kirjuri</div>
+                </div>
             </div>
         </div>
 
@@ -1424,6 +1432,9 @@
                         — se on elämä sellaisena kuin se on.
                     </p>
                 </div>
+                <div class="signature-section">
+                    <div class="author-signature">Pohjoisen rajamaan kirjuri</div>
+                </div>
             </div>
         </div>
 
@@ -1439,6 +1450,8 @@
             </div>
 
             <div class="scroll-content">
+                <h1>TUNTEMATON VIERAS</h1>
+
                 <div class="chapter">
                     <p class="chapter-content">
                         Tässä kohtaa on syytä kirjata eräs tapahtuma, josta ei ole täyttä
@@ -1456,8 +1469,132 @@
                         Historia ei syytä ketään nimeltä. Historia vain kirjaa, mitä tapahtui.
                     </p>
                 </div>
+                <div class="signature-section">
+                    <div class="author-signature">Pohjoisen rajamaan kirjuri</div>
+                </div>
             </div>
         </div>
+
+
+        <!-- PAGE 24: Scroll -->
+        <div class="scroll">
+            <div class="emblem">
+                <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" stroke="#5a3a1a" stroke-width="2" fill="none"/>
+                    <path d="M50 15 L50 85 M15 50 L85 50" stroke="#5a3a1a" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="20" stroke="#5a3a1a" stroke-width="2" fill="none"/>
+                    <path d="M35 35 L65 65 M65 35 L35 65" stroke="#5a3a1a" stroke-width="1.5"/>
+                </svg>
+            </div>
+
+            <div class="scroll-content">
+                <h1>SUURHÄMÄRÄ LASKEE</h1>
+
+                <div class="chapter">
+                    <p class="chapter-content" style="line-height: 2; text-align: center;">
+                        Kampanja kesti marraskuusta helmikuuhun. Talvi tuli ja meni.</br>
+                        Settlerit hukkuivat jokiin. Barbaarit tulivat pohjoisesta.</br>
+                        Kongressivuorot olivat tyhjiä seremonioita joissa kukaan ei
+                        äänestänyt mistään merkittävästä.</br></br>
+
+                        Vuoroja odoteltiin myöhään yöhön. Peli jumitti ja vuoro piti lähettää uudelleen.
+                        «Dodih» tarkoitti, että vuoro oli tehty.
+                        Tämä ymmärrettiin vasta kolmannen kerran jälkeen.
+
+                        Mutta he pelasivat. He pelasivat yöllä, lomalla, kesken reissujen - lauantaiaamuisin.
+                        He pelasivat, koska kohtalo oli saavutettava.</br></br>
+
+                        Kreikka voitti kulttuurivoiton. Se ei tullut miekalla eikä valtauksella.
+                        Se tuli teattereina ja temppeleinä, museona ja musiikkina,
+                        turisteina jotka halusivat nähdä sen, mitä Kreikka oli rakentanut.</br>
+                        Kreikka ei valloittanut — se vakuutti.</br>
+                        Se ei tuhonnut — se loi.</br>
+                        Ehkäpä se on paras voitto kaikista: ei se, jonka ottaa väkisin,</br>
+                        vaan se, jonka muut antavat vapaaehtoisesti.
+                    </p>
+                </div>
+                <div class="signature-section">
+                    <div class="author-signature">Ezekiel kirjuri</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 25: Scroll -->
+        <div class="scroll">
+            <div class="emblem">
+                <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" stroke="#5a3a1a" stroke-width="2" fill="none"/>
+                    <path d="M50 15 L50 85 M15 50 L85 50" stroke="#5a3a1a" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="20" stroke="#5a3a1a" stroke-width="2" fill="none"/>
+                    <path d="M35 35 L65 65 M65 35 L35 65" stroke="#5a3a1a" stroke-width="1.5"/>
+                </svg>
+            </div>
+
+            <div class="scroll-content">
+                <h1>EPITAAFIT</h1>
+
+                <div class="chapter">
+                    <p class="chapter-content" style="line-height: 2; text-align: center;">
+                        <b>Kreikka</b>: Kreikka suunnitteli joka kaupungin.</br>
+                        Kreikka opiskeli muinaisia strategioita ja voitti.</br>
+                        Kreikan sielu, joka sanoi filosofoinnin olevan tärkeämpää kuin miekan.</br></br>
+
+                        <b>Sumeria</b>: Se kävi tuhatvuotisen sodan Japania vastaan ja hävisi taktikoinnissa.</br>
+                        Se pelasi kunniakkaan pelin. Se päivitti ajurinsa vasta kun ongelma oli jo viikon vanha.
+                        Näin ovat asiat.</br></br>
+
+                        <b>Saksa</b>: Se asetti pääkaupunkinsa paikkaan jota peli suositteli.</br>
+                        Ruoka loppui, barbaarit tulivat, Inkat uhkasivat vuorten suojista.</br>
+                        Saksa pelasi fiilispohjalta loppuun asti, katkeruutta keräämättä</br>
+                        — vaikka eniten sillä olisi ollut aihetta.</br></br>
+
+                        <b>Unkari</b>: Unkari jumittui hallinnolliseen virheeseen.</br>
+                        Unkari nousi uudelleen mutta ei ehtinyt saavuttaa kulttuurin kukoistusta ajoissa.
+                    </p>
+                </div>
+                <div class="signature-section">
+                    <div class="author-signature">Ezekiel kirjuri</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 26: Scroll -->
+        <div class="scroll">
+            <div class="emblem">
+                <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" stroke="#5a3a1a" stroke-width="2" fill="none"/>
+                    <path d="M50 15 L50 85 M15 50 L85 50" stroke="#5a3a1a" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="20" stroke="#5a3a1a" stroke-width="2" fill="none"/>
+                    <path d="M35 35 L65 65 M65 35 L35 65" stroke="#5a3a1a" stroke-width="1.5"/>
+                </svg>
+            </div>
+
+            <div class="scroll-content">
+                <h1>LUKU IX — PROFETIOIDEN TÄYTTYMISEN KIRJA</h1>
+
+                <div class="chapter">
+                    <p class="chapter-content" style="line-height: 2; text-align: center;">
+                        Kirjuri istuu nyt hiljaisessa huoneessa, kun kaikki on ohi. Kreikka voitti. Unkari tuli toiseksi. Saksa ja Sumeria pelasivat loppuun kunniakkaasti. Tekoälyt — Norja, Japani, Inka — toimivat kuten tekoälyt toimivat:</br>
+                        arvaamattomasti, ärsyttävästi, puolueettomasti pahuudessaan.</br></br>
+
+                        Nyt voidaan kertoa, mitä ennustukset todella tarkoittivat.</br></br>
+
+                        <b>«Ensimmäinen valtakunta kaatuu»</b></br>
+                         — tämä ei tarkoittanut Ranskan lankeamista <s>barbaarien</s> Kreikan käsiin, vaan Unkaria itse: se kuoli hallinnolliseen virheeseen ennen kuin ensimmäinen armeija oli marssinut. Se nousi uudelleen. Se oli jo ihme sinänsä.</br></br>
+
+                        <b>«Pohjoinen voima herää»</b></br>
+                         — tämä oli Norjan tekoäly, joka kiusasi Unkaria koko kampanjan. Meri erotti, vuoret sulkivat. Mutta Norja ei koskaan voittanut, sillä voitto ei ollut sen kohtalo.</br></br>
+
+                        <b>«Varjot liikkuvat»</b></br>
+                         — tämä oli Kreikan rokkibändit, jotka liikkuivat näkymättöminä muiden kansakuntien sydämissä ja veivät turistit yksi kerrallaan, kuten varjot vievät valon. <i>Tai sitten se oli se yksi tuntematon henkilö Unkarin pääkaupungissa. Varjot liikkuvat monessa muodossa. tjsp emmä tiedä...</i>
+                    </p>
+                </div>
+                <div class="signature-section">
+                    <div class="author-signature">Ezekiel kirjuri</div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 
